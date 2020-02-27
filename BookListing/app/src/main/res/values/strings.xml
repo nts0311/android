@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">BookListing</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_view_book_info">ViewBookInfoActivity</string>
+    <string name="title_activity_preference">PreferenceActivity</string>
+
+    <string name="sort_type_pub_date">Sort by published year</string>
+    <string name="sort_type_pages">Sort by page count</string>
+    <string name="sort_type_none">None</string>
+
+    <string name="pref_result_limit_key">txt_pref_result_limit</string>
+    <string name="pref_sort_type_key">lst_pref_sort_type</string>
+</resources>

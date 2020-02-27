@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:defaultValue="false"
+        android:key="@string/pref_result_limit_key"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="Result Limit"
+        app:allowDividerAbove="true"
+        app:allowDividerBelow="true"
+        app:defaultValue="10"
+        app:iconSpaceReserved="false" />
+    <ListPreference
+        android:defaultValue="false"
+        android:entries="@array/sort_type_arr"
+        android:entryValues="@array/sort_type_arr"
+        android:key="@string/pref_sort_type_key"
+        android:title="Sort Type"
+        app:defaultValue="@string/sort_type_none"
+        app:allowDividerAbove="true"
+        app:iconSpaceReserved="false"/>
+</PreferenceScreen>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sort_type_arr">
+        <item>@string/sort_type_pub_date</item>
+        <item>@string/sort_type_pages</item>
+        <item>@string/sort_type_none</item>
+    </string-array>
+</resources>
