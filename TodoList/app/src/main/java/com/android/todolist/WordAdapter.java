@@ -50,7 +50,9 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.TodoItemViewHo
     @Override
     public int getItemCount()
     {
-        return words.size();
+        if (words != null)
+            return words.size();
+        return 0;
     }
 
     class TodoItemViewHolder extends RecyclerView.ViewHolder

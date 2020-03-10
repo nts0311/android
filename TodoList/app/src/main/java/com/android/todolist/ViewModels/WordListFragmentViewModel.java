@@ -33,6 +33,9 @@ public class WordListFragmentViewModel extends AndroidViewModel
 
     public void setCategory(String category)
     {
+        if(currentCategory!=null && category.contentEquals(currentCategory))
+            return;
+
         currentCategory = category;
         wordList = repository.getWordListByCategory(currentCategory);
     }

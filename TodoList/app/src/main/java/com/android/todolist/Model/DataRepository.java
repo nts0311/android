@@ -1,6 +1,7 @@
 package com.android.todolist.Model;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -78,6 +79,8 @@ public class DataRepository
 
     public LiveData<List<Word>> getWordListByCategory(String category)
     {
+        Log.d("Repo","fetching data from database...");
+
         if(category.contentEquals(Constants.ALL_CATEGORIES))
             return todoList;
         else

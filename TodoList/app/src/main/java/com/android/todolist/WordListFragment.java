@@ -72,8 +72,10 @@ public class WordListFragment extends Fragment
         // Inflate the layout for this fragment
         View rootLayout = inflater.inflate(R.layout.fragment_word_list, container, false);
 
-        viewModel = new ViewModelProvider(this,
-                new WordListFragViewModelFactory(getActivity().getApplication()))
+        //use getActivity() instead of this because when the fragment is destroyed not by conf changes,
+        //all stored view models get remove.
+        viewModel = new ViewModelProvider(requireActivity(),
+                new WordListFragViewModelFactory(requireActivity().getApplication()))
                 .get(WordListFragmentViewModel.class);
 
         wordAdapter = new WordAdapter();
@@ -84,7 +86,7 @@ public class WordListFragment extends Fragment
 
         viewModel.setCategory(category);
 
-        viewModel.getWordList().observe(this, words -> wordAdapter.setWords(words));
+        viewModel.getWordList().observe(getViewLifecycleOwner(), words -> wordAdapter.setWords(words));
 
         return rootLayout;
     }
