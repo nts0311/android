@@ -15,6 +15,9 @@ public interface CategoryDao
     @Query("SELECT * FROM categories")
     LiveData<List<Category>> getCategoryList();
 
+    @Query("SELECT * FROM categories WHERE category=:category")
+    LiveData<Category> getCategoryByName(String category);
+
     @Update
     void updateCategory(Category category);
 

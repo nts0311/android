@@ -5,9 +5,25 @@ import java.util.concurrent.Executors;
 
 public class AppExecutors
 {
+
+    private static AppExecutors instance=null;
+
+    public static AppExecutors getInstance()
+    {
+        if(instance==null)
+        {
+            synchronized (AppExecutors.class)
+            {
+                instance=new AppExecutors();
+            }
+        }
+
+        return instance;
+    }
+
     private Executor diskIO;
 
-    public AppExecutors()
+    private AppExecutors()
     {
         diskIO = Executors.newSingleThreadExecutor();
     }
