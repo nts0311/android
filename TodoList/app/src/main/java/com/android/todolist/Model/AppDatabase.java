@@ -8,12 +8,15 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {Category.class, TodoItem.class}, version = 1, exportSchema = false)
+import com.android.todolist.Model.Entity.Category;
+import com.android.todolist.Model.Entity.Word;
+
+@Database(entities = {Category.class, Word.class}, version = 1, exportSchema = false)
 @TypeConverters(value = {DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase
 {
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
-    private static final String DB_NAME = "todo_db";
+    private static final String DB_NAME = "word_db";
 
     private static AppDatabase instance = null;
 
@@ -24,7 +27,7 @@ public abstract class AppDatabase extends RoomDatabase
             synchronized (AppDatabase.class)
             {
                 Log.d(LOG_TAG, "Building db...");
-                instance = Room.databaseBuilder(appContext, AppDatabase.class, DB_NAME)
+                instance = Room.inMemoryDatabaseBuilder(appContext, AppDatabase.class)
                         .build();
             }
         }
@@ -34,5 +37,5 @@ public abstract class AppDatabase extends RoomDatabase
     }
 
     public abstract CategoryDao getCategoryDao();
-    public abstract TodoItemDao getTodoItemDao();
+    public abstract WordDao getTodoItemDao();
 }

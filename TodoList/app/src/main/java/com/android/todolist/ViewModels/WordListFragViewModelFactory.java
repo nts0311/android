@@ -6,11 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-public class TodoListFragViewModelFactory implements ViewModelProvider.Factory
+public class WordListFragViewModelFactory implements ViewModelProvider.Factory
 {
     private Application application;
 
-    public TodoListFragViewModelFactory(Application application)
+    public WordListFragViewModelFactory(Application application)
     {
         this.application = application;
     }
@@ -19,6 +19,6 @@ public class TodoListFragViewModelFactory implements ViewModelProvider.Factory
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass)
     {
-        return (T) new TodoListFragmentViewModel(application);
+        return (T) new WordListFragmentViewModel(application);
     }
 }

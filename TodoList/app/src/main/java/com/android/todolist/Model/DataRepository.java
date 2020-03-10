@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData;
 
 import com.android.todolist.AppExecutors;
 import com.android.todolist.Constants;
+import com.android.todolist.Model.Entity.Category;
+import com.android.todolist.Model.Entity.Word;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class DataRepository
     private AppExecutors appExecutors;
 
     private LiveData<List<Category>> categoryList;
-    private LiveData<List<TodoItem>> todoList;
+    private LiveData<List<Word>> todoList;
 
     private DataRepository(Context appContext)
     {
@@ -25,7 +27,7 @@ public class DataRepository
         appExecutors = AppExecutors.getInstance();
 
         categoryList = appDatabase.getCategoryDao().getCategoryList();
-        todoList = appDatabase.getTodoItemDao().getTodoList();
+        todoList = appDatabase.getTodoItemDao().getWordList();
     }
 
     public static DataRepository getInstance(Context appContext)
@@ -69,35 +71,35 @@ public class DataRepository
                 appDatabase.getCategoryDao().deleteCategory(category));
     }
 
-    public LiveData<List<TodoItem>> getTodoList()
+    public LiveData<List<Word>> getWordList()
     {
         return todoList;
     }
 
-    public LiveData<List<TodoItem>> getTodoListByCategory(String category)
+    public LiveData<List<Word>> getWordListByCategory(String category)
     {
         if(category.contentEquals(Constants.ALL_CATEGORIES))
             return todoList;
         else
-            return appDatabase.getTodoItemDao().getTodoListByCategory(category);
+            return appDatabase.getTodoItemDao().getWordListByCategory(category);
     }
 
-    public void insertTodoItem(TodoItem todoItem)
+    public void insertWordItem(Word word)
     {
         appExecutors.getDiskIO().execute(() ->
-                appDatabase.getTodoItemDao().insertTodoItem(todoItem));
+                appDatabase.getTodoItemDao().insertWord(word));
     }
 
-    public void updateTodoItem(TodoItem todoItem)
+    public void updateWordItem(Word word)
     {
         appExecutors.getDiskIO().execute(() ->
-                appDatabase.getTodoItemDao().updateTodoItem(todoItem));
+                appDatabase.getTodoItemDao().updateWord(word));
     }
 
-    public void deleteTodoItem(TodoItem todoItem)
+    public void deleteWordItem(Word word)
     {
         appExecutors.getDiskIO().execute(() ->
-                appDatabase.getTodoItemDao().deleteTodoItem(todoItem));
+                appDatabase.getTodoItemDao().deleteWord(word));
     }
 
 }

@@ -2,6 +2,9 @@ package com.android.todolist;
 
 import android.os.Bundle;
 
+import com.android.todolist.Model.DataRepository;
+import com.android.todolist.Model.Entity.Category;
+import com.android.todolist.Model.Entity.Word;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -14,6 +17,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
 {
+
+    private DataRepository repo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,6 +38,17 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
+
+        repo=((MyApplication) getApplication()).getRepository();
+
+        repo.insertCategory(new Category("Finance"));
+        repo.insertWordItem(new Word("Finance","debt","borrow someone money"));
+
+        WordListFragment wordListFragment=WordListFragment.newInstance("Finance");
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.test_frag, wordListFragment)
+                .commit();
     }
 
     @Override

@@ -7,6 +7,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.android.todolist.Model.Entity.Category;
+
 import java.util.List;
 
 @Dao
