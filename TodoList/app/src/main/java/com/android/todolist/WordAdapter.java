@@ -16,6 +16,8 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.TodoItemViewHo
 {
     private List<Word> words;
 
+    private OnWordClickListener onWordClickListener;
+
     public WordAdapter()
     {
     }
@@ -29,6 +31,11 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.TodoItemViewHo
     {
         this.words = words;
         notifyDataSetChanged();
+    }
+
+    public void setOnWordClickListener(OnWordClickListener onWordClickListener)
+    {
+        this.onWordClickListener = onWordClickListener;
     }
 
     @NonNull
@@ -55,6 +62,11 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.TodoItemViewHo
         return 0;
     }
 
+    public interface OnWordClickListener
+    {
+        void onWordClick(Word word);
+    }
+
     class TodoItemViewHolder extends RecyclerView.ViewHolder
     {
         private TextView tvWord;
@@ -67,14 +79,8 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.TodoItemViewHo
             tvWord = itemView.findViewById(R.id.tv_word);
             tvMeaning = itemView.findViewById(R.id.tv_meaning);
 
-            itemView.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-
-                }
-            });
+            itemView.setOnClickListener(v ->
+                    onWordClickListener.onWordClick(words.get(getAdapterPosition())));
         }
 
         public void bindData(Word word)

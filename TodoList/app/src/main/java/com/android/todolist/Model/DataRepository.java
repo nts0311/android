@@ -87,6 +87,11 @@ public class DataRepository
             return appDatabase.getTodoItemDao().getWordListByCategory(category);
     }
 
+    public LiveData<Word> getWordById(int id)
+    {
+        return appDatabase.getTodoItemDao().getWordById(id);
+    }
+
     public void insertWordItem(Word word)
     {
         appExecutors.getDiskIO().execute(() ->

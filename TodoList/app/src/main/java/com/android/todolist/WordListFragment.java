@@ -1,5 +1,6 @@
 package com.android.todolist;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -79,6 +80,13 @@ public class WordListFragment extends Fragment
                 .get(WordListFragmentViewModel.class);
 
         wordAdapter = new WordAdapter();
+        wordAdapter.setOnWordClickListener(word ->
+        {
+            Intent viewWordIntent = new Intent(requireActivity(), AddWordActivity.class);
+            viewWordIntent.putExtra(AddWordActivity.EXTRA_CATEGORY, category);
+            viewWordIntent.putExtra(AddWordActivity.EXTRA_WORD_ID, word.getId());
+            startActivity(viewWordIntent);
+        });
 
         rvWordList = rootLayout.findViewById(R.id.rv_word_list);
         rvWordList.setAdapter(wordAdapter);

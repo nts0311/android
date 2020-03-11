@@ -20,6 +20,9 @@ public interface WordDao
     @Query("SELECT * FROM words WHERE category=:category")
     LiveData<List<Word>> getWordListByCategory(String category);
 
+    @Query("SELECT * FROM words WHERE id=:id")
+    LiveData<Word> getWordById(int id);
+
     @Update
     void updateWord(Word word);
 

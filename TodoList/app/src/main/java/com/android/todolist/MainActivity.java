@@ -1,5 +1,6 @@
 package com.android.todolist;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.android.todolist.Model.DataRepository;
@@ -28,27 +29,31 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        String cate="Finance";
+
+        repo=((MyApplication) getApplication()).getRepository();
+
+        repo.insertCategory(new Category(cate));
+        repo.insertWordItem(new Word(cate,"debt","borrow someone money"));
+
+        WordListFragment wordListFragment=WordListFragment.newInstance(cate);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.test_frag, wordListFragment)
+                .commit();
+
         FloatingActionButton fab = findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent addWordIntent=new Intent(MainActivity.this, AddWordActivity.class);
+                addWordIntent.putExtra(AddWordActivity.EXTRA_CATEGORY, cate);
+                startActivity(addWordIntent);
             }
         });
-
-        repo=((MyApplication) getApplication()).getRepository();
-
-        repo.insertCategory(new Category("Finance"));
-        repo.insertWordItem(new Word("Finance","debt","borrow someone money"));
-
-        WordListFragment wordListFragment=WordListFragment.newInstance("Finance");
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.test_frag, wordListFragment)
-                .commit();
     }
 
     @Override
