@@ -11,11 +11,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".AddWordActivity"
-            android:label="@string/title_activity_add_word"
+            android:name=".Views.CategoryManagerActivity"
+            android:label="@string/title_activity_category_manager"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Views.AddWordActivity"
+            android:label="@string/title_activity_add_word"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

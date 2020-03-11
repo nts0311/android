@@ -1,4 +1,4 @@
-package com.android.todolist;
+package com.android.todolist.Views;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,11 +6,15 @@ import android.os.Bundle;
 import com.android.todolist.Model.DataRepository;
 import com.android.todolist.Model.Entity.Category;
 import com.android.todolist.Model.Entity.Word;
+import com.android.todolist.MyApplication;
+import com.android.todolist.R;
+import com.android.todolist.Views.Adapters.WordStatePagerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.View;
 import android.view.Menu;
@@ -20,6 +24,9 @@ public class MainActivity extends AppCompatActivity
 {
 
     private DataRepository repo;
+    private TabLayout categoryTabs;
+    private ViewPager mainVP;
+    private WordStatePagerAdapter wordStatePagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,19 +35,19 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        repo = ((MyApplication) getApplication()).getRepository();
 
-        String cate="Finance";
+        mainVP = findViewById(R.id.main_viewpager);
+        categoryTabs = findViewById(R.id.tab_viewpager);
 
-        repo=((MyApplication) getApplication()).getRepository();
+        String cate = "Finance";
+        generateData();
 
-        repo.insertCategory(new Category(cate));
-        repo.insertWordItem(new Word(cate,"debt","borrow someone money"));
-
-        WordListFragment wordListFragment=WordListFragment.newInstance(cate);
+      /*  WordListFragment wordListFragment=WordListFragment.newInstance(cate);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.test_frag, wordListFragment)
-                .commit();
+                .commit();*/
 
         FloatingActionButton fab = findViewById(R.id.fab);
 
@@ -49,11 +56,33 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Intent addWordIntent=new Intent(MainActivity.this, AddWordActivity.class);
+                Intent addWordIntent = new Intent(MainActivity.this, AddWordActivity.class);
                 addWordIntent.putExtra(AddWordActivity.EXTRA_CATEGORY, cate);
                 startActivity(addWordIntent);
             }
         });
+
+        wordStatePagerAdapter = new WordStatePagerAdapter(getSupportFragmentManager());
+        repo.getCategoryList().observe(this, categories ->
+        {
+            wordStatePagerAdapter.setCategories(categories);
+        });
+        mainVP.setAdapter(wordStatePagerAdapter);
+        categoryTabs.setupWithViewPager(mainVP);
+
+    }
+
+    private void generateData()
+    {
+        String cate = "Finance";
+
+        repo.insertCategory(new Category(cate));
+        repo.insertWordItem(new Word(cate, "debt", "borrow someone money"));
+
+        cate = "Finance1";
+
+        repo.insertCategory(new Category(cate));
+        repo.insertWordItem(new Word(cate, "debt1", "borrow someone money1"));
     }
 
     @Override
@@ -76,6 +105,10 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings)
         {
             return true;
+        }
+        else if(id==R.id.item_category_manager)
+        {
+            startActivity(new Intent(this, CategoryManagerActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

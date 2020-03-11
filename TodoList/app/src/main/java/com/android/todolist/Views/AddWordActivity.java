@@ -1,10 +1,12 @@
-package com.android.todolist;
+package com.android.todolist.Views;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.android.todolist.Model.DataRepository;
 import com.android.todolist.Model.Entity.Word;
+import com.android.todolist.MyApplication;
+import com.android.todolist.R;
 import com.android.todolist.ViewModels.AddWordViewModel;
 import com.android.todolist.ViewModels.AddWordViewModelFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

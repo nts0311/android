@@ -1,0 +1,50 @@
+package com.android.todolist.Views.Adapters;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+
+import com.android.todolist.Model.Entity.Category;
+import com.android.todolist.Views.WordListFragment;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class WordStatePagerAdapter extends FragmentStatePagerAdapter
+{
+    List<Category> categories = new ArrayList<>();
+
+    public WordStatePagerAdapter(@NonNull FragmentManager fm)
+    {
+        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+    }
+
+    public void setCategories(List<Category> categories)
+    {
+        this.categories = categories;
+        notifyDataSetChanged();
+    }
+
+    @NonNull
+    @Override
+    public Fragment getItem(int position)
+    {
+        String cate = categories.get(position).getCategory();
+        return WordListFragment.newInstance(cate);
+    }
+
+    @Override
+    public int getCount()
+    {
+        return categories.size();
+    }
+
+    @Nullable
+    @Override
+    public CharSequence getPageTitle(int position)
+    {
+        return categories.get(position).getCategory();
+    }
+}

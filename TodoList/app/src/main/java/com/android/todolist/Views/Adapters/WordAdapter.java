@@ -1,4 +1,4 @@
-package com.android.todolist;
+package com.android.todolist.Views.Adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.todolist.Model.Entity.Word;
+import com.android.todolist.R;
 
 import java.util.List;
 
