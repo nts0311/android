@@ -63,6 +63,8 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.TodoItemViewHo
         return 0;
     }
 
+
+
     public interface OnWordClickListener
     {
         void onWordClick(Word word);
@@ -89,5 +91,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.TodoItemViewHo
             tvWord.setText(word.getWord());
             tvMeaning.setText(word.getMeaning());
         }
+
+
     }
 }

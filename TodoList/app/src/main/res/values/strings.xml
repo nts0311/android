@@ -14,4 +14,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_add_word">AddWordActivity</string>
     <string name="title_activity_category_manager">CategoryManagerActivity</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>

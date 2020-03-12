@@ -1,5 +1,6 @@
 package com.android.todolist.Model.Entity;
 
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -41,5 +42,14 @@ public class Category
     public void setCategory(String category)
     {
         this.category = category;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj)
+    {
+        if (!(obj instanceof Category))
+            return false;
+
+        return ((Category) obj).category.equals(this.category);
     }
 }
