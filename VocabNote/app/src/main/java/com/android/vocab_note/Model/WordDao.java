@@ -24,7 +24,7 @@ public interface WordDao
     LiveData<Word> getWordById(int id);
 
     @Query("UPDATE words SET category=:newCategory WHERE category=:oldCategory")
-    void updateCategory(String oldCategory, String newCategory);
+    void updateWordsCategory(String oldCategory, String newCategory);
 
     @Update
     void updateWord(Word word);

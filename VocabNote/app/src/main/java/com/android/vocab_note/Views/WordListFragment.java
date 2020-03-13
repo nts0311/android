@@ -9,6 +9,7 @@ import androidx.appcompat.view.ActionMode;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -72,6 +73,7 @@ public class WordListFragment extends SimpleRecycleViewFragment
         {
             category = getArguments().getString(ARG_CATEGORY);
         }
+
     }
 
     @Override
@@ -123,6 +125,12 @@ public class WordListFragment extends SimpleRecycleViewFragment
         getRecyclerView().addItemDecoration(decoration);
 
         return rootlayout;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
     }
 
     @Override

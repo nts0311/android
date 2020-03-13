@@ -35,4 +35,11 @@ public class CategoryManagerViewModel extends ViewModel
         Category removedCategory = getCategory(position);
         repository.deleteCategory(removedCategory);
     }
+
+    public void renameCategory(Category oldCategory, String newCategoryStr)
+    {
+        Category newCategory = new Category(oldCategory.getId(), newCategoryStr);
+        repository.updateWordsCategory(newCategory);
+        repository.updateWordsCategory(oldCategory.getCategory(), newCategoryStr);
+    }
 }

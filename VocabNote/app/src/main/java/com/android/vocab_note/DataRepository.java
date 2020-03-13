@@ -19,7 +19,7 @@ public class DataRepository
     private AppExecutors appExecutors;
 
     private LiveData<List<Category>> categoryList;
-    private LiveData<List<Word>> todoList;
+    private LiveData<List<Word>> wordList;
 
     private DataRepository(Context appContext)
     {
@@ -27,7 +27,7 @@ public class DataRepository
         appExecutors = AppExecutors.getInstance();
 
         categoryList = appDatabase.getCategoryDao().getCategoryList();
-        todoList = appDatabase.getWordDao().getWordList();
+        wordList = appDatabase.getWordDao().getWordList();
     }
 
     public static DataRepository getInstance(Context appContext)
@@ -59,7 +59,7 @@ public class DataRepository
                 appDatabase.getCategoryDao().insertCategory(category));
     }
 
-    public void updateCategory(Category category)
+    public void updateWordsCategory(Category category)
     {
         appExecutors.getDiskIO().execute(() ->
                 appDatabase.getCategoryDao().updateCategory(category));
@@ -73,7 +73,7 @@ public class DataRepository
 
     public LiveData<List<Word>> getWordList()
     {
-        return todoList;
+        return wordList;
     }
 
     public LiveData<List<Word>> getWordListByCategory(String category)
@@ -110,5 +110,11 @@ public class DataRepository
     {
         appExecutors.getDiskIO().execute(()->
                 appDatabase.getWordDao().deleteWordList(wordsToDelete));
+    }
+
+    public void updateWordsCategory(String oldCategory, String newCategory)
+    {
+        appExecutors.getDiskIO().execute(()->
+                appDatabase.getWordDao().updateWordsCategory(oldCategory, newCategory));
     }
 }
