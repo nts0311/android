@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.android.vocab_note.Model.DataRepository;
+import com.android.vocab_note.DataRepository;
 
 public class AddWordViewModelFactory implements ViewModelProvider.Factory
 {

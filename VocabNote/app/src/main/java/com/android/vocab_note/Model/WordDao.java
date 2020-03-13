@@ -23,6 +23,9 @@ public interface WordDao
     @Query("SELECT * FROM words WHERE id=:id")
     LiveData<Word> getWordById(int id);
 
+    @Query("UPDATE words SET category=:newCategory WHERE category=:oldCategory")
+    void updateCategory(String oldCategory, String newCategory);
+
     @Update
     void updateWord(Word word);
 

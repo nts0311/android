@@ -1,11 +1,11 @@
-package com.android.vocab_note.Model;
+package com.android.vocab_note;
 
 import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
-import com.android.vocab_note.AppExecutors;
+import com.android.vocab_note.Model.AppDatabase;
 import com.android.vocab_note.Model.Entity.Category;
 import com.android.vocab_note.Model.Entity.Word;
 

@@ -42,6 +42,13 @@ public class CategoryListFragment extends SimpleRecycleViewFragment
                 categoryAdapter.setCategories(categories));
 
 
+        setUpRecycleView();
+
+        return rootLayout;
+    }
+
+    private void setUpRecycleView()
+    {
         /*Swipe left to delete a category*/
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT)
         {
@@ -59,33 +66,37 @@ public class CategoryListFragment extends SimpleRecycleViewFragment
                 final int removeCategoryPos = viewHolder.getAdapterPosition();
                 String category = viewModel.getCategory(removeCategoryPos).getCategory();
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-
-                builder.setTitle("Delete " + category);
-                builder.setMessage("Are you sure want to delete " + category + "?");
-
-                builder.setPositiveButton("OK", (dialog, which) ->
-                {
-                    viewModel.removeCategory(removeCategoryPos);
-                });
-
-                builder.setNegativeButton("Cancel", (dialog, which) ->
-                {
-                    getAdapter().notifyItemChanged(removeCategoryPos);
-                    deleteConfirmDialog.cancel();
-                });
-
-                deleteConfirmDialog = builder.create();
+                if (deleteConfirmDialog == null)
+                    buildDeleteConfirmDialog(category, removeCategoryPos);
 
                 deleteConfirmDialog.show();
             }
         }).attachToRecyclerView(getRecyclerView());
 
+        //Divider for each item in the recycle view
         DividerItemDecoration decoration = new DividerItemDecoration(
                 requireActivity().getApplicationContext(), VERTICAL);
         getRecyclerView().addItemDecoration(decoration);
+    }
 
+    private void buildDeleteConfirmDialog(String category, int removeCategoryPos)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
-        return rootLayout;
+        builder.setTitle("Delete " + category);
+        builder.setMessage("Are you sure want to delete " + category + "?");
+
+        builder.setPositiveButton("OK", (dialog, which) ->
+        {
+            viewModel.removeCategory(removeCategoryPos);
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) ->
+        {
+            getAdapter().notifyItemChanged(removeCategoryPos);
+            deleteConfirmDialog.cancel();
+        });
+
+        deleteConfirmDialog = builder.create();
     }
 }

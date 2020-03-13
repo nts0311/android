@@ -2,7 +2,7 @@ package com.android.vocab_note.Views;
 
 import android.os.Bundle;
 
-import com.android.vocab_note.Model.DataRepository;
+import com.android.vocab_note.DataRepository;
 import com.android.vocab_note.Model.Entity.Category;
 import com.android.vocab_note.MyApplication;
 import com.android.vocab_note.R;

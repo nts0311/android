@@ -109,7 +109,7 @@ public class WordListFragment extends SimpleRecycleViewFragment
         });
 
 
-        viewModel = new ViewModelProvider(requireActivity(),
+        viewModel = new ViewModelProvider(this,
                 new WordListFragViewModelFactory(requireActivity().getApplication()))
                 .get(WordListFragmentViewModel.class);
         viewModel.setCategory(category);
@@ -142,9 +142,7 @@ public class WordListFragment extends SimpleRecycleViewFragment
 
         if (count == 0)
         {
-            if (actionMode != null)
-                actionMode.finish();
-            isInActionMode = false;
+            finishActionMode();
         }
         else
         {
@@ -189,9 +187,7 @@ public class WordListFragment extends SimpleRecycleViewFragment
                         wordsToDelete.add(words.get(index));
                     viewModel.deleteWordList(wordsToDelete);
 
-                    if (actionMode != null)
-                        actionMode.finish();
-                    isInActionMode = false;
+                    finishActionMode();
 
                     return true;
             }
@@ -206,5 +202,11 @@ public class WordListFragment extends SimpleRecycleViewFragment
             isInActionMode = false;
             actionMode = null;
         }
+    }
+    private void finishActionMode()
+    {
+        if (actionMode != null)
+            actionMode.finish();
+        isInActionMode = false;
     }
 }

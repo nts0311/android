@@ -3,7 +3,7 @@ package com.android.vocab_note.Views;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.android.vocab_note.Model.DataRepository;
+import com.android.vocab_note.DataRepository;
 import com.android.vocab_note.Model.Entity.Category;
 import com.android.vocab_note.Model.Entity.Word;
 import com.android.vocab_note.MyApplication;
@@ -61,7 +61,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onChanged(List<Category> categories)
             {
-                currentCategory = categories.get(0).getCategory();
+                if (categories.size() != 0)
+                    currentCategory = categories.get(0).getCategory();
                 categoryList.removeObserver(this);
             }
         });

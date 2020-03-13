@@ -3,7 +3,7 @@ package com.android.vocab_note.Views;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.android.vocab_note.Model.DataRepository;
+import com.android.vocab_note.DataRepository;
 import com.android.vocab_note.Model.Entity.Word;
 import com.android.vocab_note.MyApplication;
 import com.android.vocab_note.R;

@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.android.vocab_note.Model.DataRepository;
+import com.android.vocab_note.DataRepository;
 import com.android.vocab_note.Model.Entity.Word;
 import com.android.vocab_note.MyApplication;
 
@@ -46,8 +46,10 @@ public class WordListFragmentViewModel extends AndroidViewModel
 
     public void deleteWordList(List<Word> wordsToDelete)
     {
-        /*List<Word> wordsToDelete = new ArrayList<>();
         List<Word> words = wordList.getValue();
+        List<Word> words1 = repository.getWordListByCategory(currentCategory).getValue();
+        /*List<Word> wordsToDelete = new ArrayList<>();
+
 
         for (Integer index : wordIndexes)
             wordsToDelete.add(words.get(index));*/
