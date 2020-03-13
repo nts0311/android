@@ -31,4 +31,7 @@ public interface WordDao
 
     @Delete
     void deleteWord(Word word);
+
+    @Delete
+    void deleteWordList(List<Word> words);
 }

@@ -12,6 +12,7 @@ import com.android.todolist.Model.DataRepository;
 import com.android.todolist.Model.Entity.Word;
 import com.android.todolist.MyApplication;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WordListFragmentViewModel extends AndroidViewModel
@@ -33,7 +34,7 @@ public class WordListFragmentViewModel extends AndroidViewModel
 
     public void setCategory(String category)
     {
-        if(currentCategory!=null && category.contentEquals(currentCategory))
+        if (currentCategory != null && category.contentEquals(currentCategory))
             return;
 
         currentCategory = category;
@@ -43,5 +44,16 @@ public class WordListFragmentViewModel extends AndroidViewModel
     public LiveData<List<Word>> getWordList()
     {
         return wordList;
+    }
+
+    public void deleteWordList(List<Word> wordsToDelete)
+    {
+        /*List<Word> wordsToDelete = new ArrayList<>();
+        List<Word> words = wordList.getValue();
+
+        for (Integer index : wordIndexes)
+            wordsToDelete.add(words.get(index));*/
+
+        repository.deleteWordList(wordsToDelete);
     }
 }

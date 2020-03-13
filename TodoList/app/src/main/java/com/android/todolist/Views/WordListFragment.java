@@ -7,18 +7,24 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.android.todolist.Model.Entity.Word;
 import com.android.todolist.R;
 import com.android.todolist.ViewModels.WordListFragViewModelFactory;
 import com.android.todolist.ViewModels.WordListFragmentViewModel;
 import com.android.todolist.Views.Adapters.WordAdapter2;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static androidx.recyclerview.widget.DividerItemDecoration.VERTICAL;
 
 
 public class WordListFragment extends SimpleRecycleViewFragment
@@ -112,6 +118,10 @@ public class WordListFragment extends SimpleRecycleViewFragment
             wordAdapter.setWords(words);
         });
 
+        DividerItemDecoration decoration = new DividerItemDecoration(
+                requireActivity().getApplicationContext(), VERTICAL);
+        getRecyclerView().addItemDecoration(decoration);
+
         return rootlayout;
     }
 
@@ -169,7 +179,20 @@ public class WordListFragment extends SimpleRecycleViewFragment
             switch (item.getItemId())
             {
                 case R.id.action_delete:
-                    Toast.makeText(requireActivity(), "Delete", Toast.LENGTH_SHORT).show();
+                    WordAdapter2 wordAdapter = ((WordAdapter2) getAdapter());
+
+                    List<Word> words = wordAdapter.getWords();
+                    List<Integer> selectedIndexes = wordAdapter.getSelectedItems();
+                    List<Word> wordsToDelete = new ArrayList<>();
+
+                    for (Integer index : selectedIndexes)
+                        wordsToDelete.add(words.get(index));
+                    viewModel.deleteWordList(wordsToDelete);
+
+                    if (actionMode != null)
+                        actionMode.finish();
+                    isInActionMode = false;
+
                     return true;
             }
 

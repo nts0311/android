@@ -59,5 +59,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         {
             textView.setText(category.getCategory());
         }
+
+        public String getCategory()
+        {
+            return textView.getText().toString();
+        }
     }
 }

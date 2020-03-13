@@ -6,7 +6,6 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 
 import com.android.todolist.AppExecutors;
-import com.android.todolist.Constants;
 import com.android.todolist.Model.Entity.Category;
 import com.android.todolist.Model.Entity.Word;
 
@@ -81,10 +80,7 @@ public class DataRepository
     {
         Log.d("Repo","fetching data from database...");
 
-        if(category.contentEquals(Constants.ALL_CATEGORIES))
-            return todoList;
-        else
-            return appDatabase.getTodoItemDao().getWordListByCategory(category);
+        return appDatabase.getTodoItemDao().getWordListByCategory(category);
     }
 
     public LiveData<Word> getWordById(int id)
@@ -110,4 +106,9 @@ public class DataRepository
                 appDatabase.getTodoItemDao().deleteWord(word));
     }
 
+    public void deleteWordList(List<Word> wordsToDelete)
+    {
+        appExecutors.getDiskIO().execute(()->
+                appDatabase.getTodoItemDao().deleteWordList(wordsToDelete));
+    }
 }
