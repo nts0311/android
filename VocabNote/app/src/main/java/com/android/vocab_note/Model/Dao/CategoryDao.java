@@ -1,4 +1,4 @@
-package com.android.vocab_note.Model;
+package com.android.vocab_note.Model.Dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -18,7 +18,10 @@ public interface CategoryDao
     LiveData<List<Category>> getCategoryList();
 
     @Query("SELECT * FROM categories WHERE category=:category")
-    LiveData<Category> getCategoryByName(String category);
+    Category getCategoryByName(String category);
+
+    @Query("SELECT * FROM categories WHERE id=:id")
+    Category getCategoryBiId(int id);
 
     @Update
     void updateCategory(Category category);

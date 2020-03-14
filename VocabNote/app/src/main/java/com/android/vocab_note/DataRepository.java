@@ -48,7 +48,7 @@ public class DataRepository
         return categoryList;
     }
 
-    public LiveData<Category> getCategoryByName(String name)
+    public Category getCategoryByName(String name)
     {
         return appDatabase.getCategoryDao().getCategoryByName(name);
     }
@@ -59,16 +59,21 @@ public class DataRepository
                 appDatabase.getCategoryDao().insertCategory(category));
     }
 
-    public void updateWordsCategory(Category category)
+    public void updateWordCategory(Category category)
     {
         appExecutors.getDiskIO().execute(() ->
                 appDatabase.getCategoryDao().updateCategory(category));
     }
 
-    public void deleteCategory(Category category)
+    public boolean deleteCategory(Category category)
     {
+        if (category.getCategory().equals(Constants.CATEGORY_COMMON))
+            return false;
+
         appExecutors.getDiskIO().execute(() ->
                 appDatabase.getCategoryDao().deleteCategory(category));
+
+        return true;
     }
 
     public LiveData<List<Word>> getWordList()
@@ -76,11 +81,11 @@ public class DataRepository
         return wordList;
     }
 
-    public LiveData<List<Word>> getWordListByCategory(String category)
+    public LiveData<List<Word>> getWordListByCategory(int categoryId)
     {
-        Log.d("Repo","fetching data from database...");
+        Log.d("Repo", "fetching data from database...");
 
-        return appDatabase.getWordDao().getWordListByCategory(category);
+        return appDatabase.getWordDao().getWordListByCategory(categoryId);
     }
 
     public LiveData<Word> getWordById(int id)
@@ -108,13 +113,17 @@ public class DataRepository
 
     public void deleteWordList(List<Word> wordsToDelete)
     {
-        appExecutors.getDiskIO().execute(()->
+        appExecutors.getDiskIO().execute(() ->
                 appDatabase.getWordDao().deleteWordList(wordsToDelete));
     }
 
-    public void updateWordsCategory(String oldCategory, String newCategory)
+    public void changeWordsToDefaultCategory(int oldCategoryId)
     {
-        appExecutors.getDiskIO().execute(()->
-                appDatabase.getWordDao().updateWordsCategory(oldCategory, newCategory));
+        appExecutors.getDiskIO().execute(() ->
+        {
+            int commonCategoryId = appDatabase.getCategoryDao()
+                    .getCategoryByName(Constants.CATEGORY_COMMON).getId();
+            appDatabase.getWordDao().updateWordsCategory(oldCategoryId, commonCategoryId);
+        });
     }
 }

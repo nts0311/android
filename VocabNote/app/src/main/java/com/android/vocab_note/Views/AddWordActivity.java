@@ -23,15 +23,15 @@ import android.widget.EditText;
 public class AddWordActivity extends AppCompatActivity
 {
     public static final String EXTRA_WORD_ID = "extra_word_id";
-    public static final String EXTRA_CATEGORY = "extra_category";
+    public static final String EXTRA_CATEGORY_ID = "extra_category_id";
     public static final String INSTANCE_WORD_ID = "instance_word_id";
-    public static final String INSTANCE_CATEGORY = "instance_category";
+    public static final String INSTANCE_CATEGORY_ID = "instance_category_id";
     public static final int DEFAULT_WORD_ID = -1;
 
     private EditText etWord;
     private EditText etMeaning;
 
-    private String category;
+    private int categoryId;
 
     private int extraWordId = DEFAULT_WORD_ID;
 
@@ -57,13 +57,13 @@ public class AddWordActivity extends AppCompatActivity
             if (savedInstanceState.containsKey(INSTANCE_WORD_ID))
                 extraWordId = savedInstanceState.getInt(INSTANCE_WORD_ID, DEFAULT_WORD_ID);
 
-            if (savedInstanceState.containsKey(INSTANCE_CATEGORY))
-                category = savedInstanceState.getString(INSTANCE_CATEGORY);
+            if (savedInstanceState.containsKey(INSTANCE_CATEGORY_ID))
+                categoryId = savedInstanceState.getInt(INSTANCE_CATEGORY_ID);
         }
 
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(EXTRA_CATEGORY))
-            category = intent.getStringExtra(EXTRA_CATEGORY);
+        if (intent != null && intent.hasExtra(EXTRA_CATEGORY_ID))
+            categoryId = intent.getIntExtra(EXTRA_CATEGORY_ID, 1);
 
         getExtraWord();
 
@@ -90,10 +90,7 @@ public class AddWordActivity extends AppCompatActivity
 
             final LiveData<Word> extraWord = viewModel.getExtraWord();
 
-            extraWord.observe(this, word ->
-            {
-                populateUI(word);
-            });
+            extraWord.observe(this, word -> populateUI(word));
         }
     }
 
@@ -103,7 +100,7 @@ public class AddWordActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
 
         outState.putInt(INSTANCE_WORD_ID, extraWordId);
-        outState.putString(INSTANCE_CATEGORY, category);
+        outState.putInt(INSTANCE_CATEGORY_ID, categoryId);
     }
 
     public void populateUI(Word word)
@@ -114,7 +111,7 @@ public class AddWordActivity extends AppCompatActivity
 
     private void saveWord()
     {
-        Word word = new Word(category, etWord.getText().toString(), etMeaning.getText().toString());
+        Word word = new Word(categoryId, etWord.getText().toString(), etMeaning.getText().toString());
 
         if (extraWordId == DEFAULT_WORD_ID)
         {

@@ -14,11 +14,16 @@ import java.util.List;
 
 public class WordStatePagerAdapter extends FragmentStatePagerAdapter
 {
-    List<Category> categories = new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
 
     public WordStatePagerAdapter(@NonNull FragmentManager fm)
     {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+    }
+
+    public List<Category> getCategories()
+    {
+        return categories;
     }
 
     public void setCategories(List<Category> categories)
@@ -33,7 +38,7 @@ public class WordStatePagerAdapter extends FragmentStatePagerAdapter
     @Override
     public Fragment getItem(int position)
     {
-        String cate = categories.get(position).getCategory();
+        int cate = categories.get(position).getId();
         return WordListFragment.newInstance(cate);
     }
 

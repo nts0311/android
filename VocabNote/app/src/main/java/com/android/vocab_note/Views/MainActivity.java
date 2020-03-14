@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity
     private ViewPager mainVP;
     private WordStatePagerAdapter wordStatePagerAdapter;
 
-    private String currentCategory;
+    private int currentCategoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(view ->
         {
             Intent addWordIntent = new Intent(MainActivity.this, AddWordActivity.class);
-            addWordIntent.putExtra(AddWordActivity.EXTRA_CATEGORY, currentCategory);
+            addWordIntent.putExtra(AddWordActivity.EXTRA_CATEGORY_ID, currentCategoryId);
             startActivity(addWordIntent);
         });
 
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity
             public void onChanged(List<Category> categories)
             {
                 if (categories.size() != 0)
-                    currentCategory = categories.get(0).getCategory();
+                    currentCategoryId = categories.get(0).getId();
                 categoryList.removeObserver(this);
             }
         });
@@ -75,9 +75,7 @@ public class MainActivity extends AppCompatActivity
 
         wordStatePagerAdapter = new WordStatePagerAdapter(getSupportFragmentManager());
         repo.getCategoryList().observe(this, categories ->
-        {
-            wordStatePagerAdapter.setCategories(categories);
-        });
+                wordStatePagerAdapter.setCategories(categories));
         mainVP.setAdapter(wordStatePagerAdapter);
         mainVP.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
         {
@@ -90,7 +88,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPageSelected(int position)
             {
-                currentCategory = wordStatePagerAdapter.getPageTitle(position).toString();
+                currentCategoryId = wordStatePagerAdapter.getCategories().get(position).getId();
             }
 
             @Override
@@ -106,7 +104,7 @@ public class MainActivity extends AppCompatActivity
 
     private void generateData()
     {
-        String cate = "Finance";
+        /*String cate = "Finance";
 
         repo.insertCategory(new Category(cate));
         repo.insertWordItem(new Word(cate, "debt", "borrow someone money"));
@@ -114,7 +112,16 @@ public class MainActivity extends AppCompatActivity
         cate = "Finance1";
 
         repo.insertCategory(new Category(cate));
-        repo.insertWordItem(new Word(cate, "debt1", "borrow someone money1"));
+        repo.insertWordItem(new Word(cate, "debt1", "borrow someone money1"));*/
+
+        /*Category common=new Category("Common");
+        repo.insertCategory(common);
+        repo.insertWordItem(new Word(common.getId(), "fine", "good"));
+
+        Category finance=new Category("Finance");
+        repo.insertCategory(finance);
+        repo.insertWordItem(new Word(finance.getId(), "debt", "borrow someone money"));*/
+
     }
 
     @Override

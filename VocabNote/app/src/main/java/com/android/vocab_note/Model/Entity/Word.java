@@ -9,25 +9,26 @@ public class Word
 {
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private String category;
+    private int categoryId;
     private String word;
     private String meaning;
 
-    public Word(int id, String category, String word, String meaning)
+    public Word(int id, int categoryId, String word, String meaning)
     {
         this.id = id;
-        this.category = category;
+        this.categoryId = categoryId;
         this.word = word;
         this.meaning = meaning;
     }
 
     @Ignore
-    public Word(String category, String word, String meaning)
+    public Word(int categoryId, String word, String meaning)
     {
-        this.category = category;
+        this.categoryId = categoryId;
         this.word = word;
         this.meaning = meaning;
     }
+
 
     public int getId()
     {
@@ -39,14 +40,14 @@ public class Word
         this.id = id;
     }
 
-    public String getCategory()
+    public int getCategoryId()
     {
-        return category;
+        return categoryId;
     }
 
-    public void setCategory(String category)
+    public void setCategoryId(int categoryId)
     {
-        this.category = category;
+        this.categoryId = categoryId;
     }
 
     public String getMeaning()

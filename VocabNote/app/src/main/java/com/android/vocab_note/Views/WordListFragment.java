@@ -9,7 +9,6 @@ import androidx.appcompat.view.ActionMode;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +17,7 @@ import android.view.ViewGroup;
 
 import com.android.vocab_note.Model.Entity.Word;
 import com.android.vocab_note.R;
-import com.android.vocab_note.ViewModels.WordListFragViewModelFactory;
+import com.android.vocab_note.ViewModels.RepositoryViewModelFactory;
 import com.android.vocab_note.ViewModels.WordListFragmentViewModel;
 import com.android.vocab_note.Views.Adapters.WordAdapter2;
 
@@ -31,10 +30,10 @@ import static androidx.recyclerview.widget.DividerItemDecoration.VERTICAL;
 public class WordListFragment extends SimpleRecycleViewFragment
 {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_CATEGORY = "category";
-    private static final String INSTANCE_CATEGORY = "category";
+    private static final String ARG_CATEGORY = "category_id";
+    private static final String INSTANCE_CATEGORY = "category_id";
 
-    private String category;
+    private int categoryId;
 
     private WordListFragmentViewModel viewModel;
     private ActionMode actionMode;
@@ -49,11 +48,11 @@ public class WordListFragment extends SimpleRecycleViewFragment
      * @return A new instance of fragment TodoListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static WordListFragment newInstance(String category)
+    public static WordListFragment newInstance(int category)
     {
         WordListFragment fragment = new WordListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_CATEGORY, category);
+        args.putInt(ARG_CATEGORY, category);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,12 +65,12 @@ public class WordListFragment extends SimpleRecycleViewFragment
         if (savedInstanceState != null)
         {
             if (savedInstanceState.containsKey(INSTANCE_CATEGORY))
-                category = savedInstanceState.getString(INSTANCE_CATEGORY);
+                categoryId = savedInstanceState.getInt(INSTANCE_CATEGORY);
         }
 
         if (getArguments() != null)
         {
-            category = getArguments().getString(ARG_CATEGORY);
+            categoryId = getArguments().getInt(ARG_CATEGORY);
         }
 
     }
@@ -89,7 +88,7 @@ public class WordListFragment extends SimpleRecycleViewFragment
             if (!isInActionMode)
             {
                 Intent viewWordIntent = new Intent(requireActivity(), AddWordActivity.class);
-                viewWordIntent.putExtra(AddWordActivity.EXTRA_CATEGORY, category);
+                viewWordIntent.putExtra(AddWordActivity.EXTRA_CATEGORY_ID, categoryId);
                 viewWordIntent.putExtra(AddWordActivity.EXTRA_WORD_ID, word.getId());
                 startActivity(viewWordIntent);
             }
@@ -112,9 +111,9 @@ public class WordListFragment extends SimpleRecycleViewFragment
 
 
         viewModel = new ViewModelProvider(this,
-                new WordListFragViewModelFactory(requireActivity().getApplication()))
+                new RepositoryViewModelFactory(requireActivity().getApplication()))
                 .get(WordListFragmentViewModel.class);
-        viewModel.setCategory(category);
+        viewModel.setCategory(categoryId);
         viewModel.getWordList().observe(getViewLifecycleOwner(), words ->
         {
             wordAdapter.setWords(words);
@@ -137,7 +136,7 @@ public class WordListFragment extends SimpleRecycleViewFragment
     public void onSaveInstanceState(@NonNull Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putString(INSTANCE_CATEGORY, category);
+        outState.putInt(INSTANCE_CATEGORY, categoryId);
     }
 
     private void toggleSelection(int position)

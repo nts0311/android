@@ -1,4 +1,4 @@
-package com.android.vocab_note.Model;
+package com.android.vocab_note.Model.Dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -17,14 +17,14 @@ public interface WordDao
     @Query("SELECT * FROM words")
     LiveData<List<Word>> getWordList();
 
-    @Query("SELECT * FROM words WHERE category=:category")
-    LiveData<List<Word>> getWordListByCategory(String category);
+    @Query("SELECT * FROM words WHERE categoryId=:categoryId")
+    LiveData<List<Word>> getWordListByCategory(int categoryId);
 
     @Query("SELECT * FROM words WHERE id=:id")
     LiveData<Word> getWordById(int id);
 
-    @Query("UPDATE words SET category=:newCategory WHERE category=:oldCategory")
-    void updateWordsCategory(String oldCategory, String newCategory);
+    @Query("UPDATE words SET categoryId=:newCategoryId WHERE categoryId=:oldCategoryId")
+    void updateWordsCategory(int oldCategoryId, int newCategoryId);
 
     @Update
     void updateWord(Word word);

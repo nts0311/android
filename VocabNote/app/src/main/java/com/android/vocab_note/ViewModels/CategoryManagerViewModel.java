@@ -33,13 +33,19 @@ public class CategoryManagerViewModel extends ViewModel
     public void removeCategory(int position)
     {
         Category removedCategory = getCategory(position);
-        repository.deleteCategory(removedCategory);
+        boolean canDelete = repository.deleteCategory(removedCategory);
+
+        //TODO change the words in a deleted category to COMMON
+
+        if(canDelete)
+        {
+            repository.changeWordsToDefaultCategory(removedCategory.getId());
+        }
     }
 
     public void renameCategory(Category oldCategory, String newCategoryStr)
     {
         Category newCategory = new Category(oldCategory.getId(), newCategoryStr);
-        repository.updateWordsCategory(newCategory);
-        repository.updateWordsCategory(oldCategory.getCategory(), newCategoryStr);
+        repository.updateWordCategory(newCategory);
     }
 }

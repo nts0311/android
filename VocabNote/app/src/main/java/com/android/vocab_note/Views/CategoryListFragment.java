@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.vocab_note.Model.Entity.Category;
 import com.android.vocab_note.R;
 import com.android.vocab_note.ViewModels.CategoryManagerViewModel;
-import com.android.vocab_note.ViewModels.CategoryManagerViewModelFactory;
+import com.android.vocab_note.ViewModels.RepositoryViewModelFactory;
 import com.android.vocab_note.Views.Adapters.CategoryAdapter;
 
 import static androidx.recyclerview.widget.DividerItemDecoration.VERTICAL;
@@ -37,7 +37,7 @@ public class CategoryListFragment extends SimpleRecycleViewFragment
         setAdapter(categoryAdapter);
 
         viewModel = new ViewModelProvider(requireActivity(),
-                new CategoryManagerViewModelFactory(requireActivity().getApplication()))
+                new RepositoryViewModelFactory(requireActivity().getApplication()))
                 .get(CategoryManagerViewModel.class);
 
         viewModel.getCategoryList().observe(getViewLifecycleOwner(), categories ->
