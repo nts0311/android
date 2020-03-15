@@ -65,15 +65,10 @@ public class DataRepository
                 appDatabase.getCategoryDao().updateCategory(category));
     }
 
-    public boolean deleteCategory(Category category)
+    public void deleteCategory(Category category)
     {
-        if (category.getCategory().equals(Constants.CATEGORY_COMMON))
-            return false;
-
         appExecutors.getDiskIO().execute(() ->
                 appDatabase.getCategoryDao().deleteCategory(category));
-
-        return true;
     }
 
     public LiveData<List<Word>> getWordList()

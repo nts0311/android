@@ -12,6 +12,9 @@ import com.android.vocab_note.Views.WordListFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * StatePagerAdapter for the main ViewPager in the MainActivity
+ */
 public class WordStatePagerAdapter extends FragmentStatePagerAdapter
 {
     private List<Category> categories = new ArrayList<>();

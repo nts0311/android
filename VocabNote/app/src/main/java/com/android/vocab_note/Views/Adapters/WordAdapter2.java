@@ -18,10 +18,11 @@ public class WordAdapter2 extends SelectableAdapter<WordAdapter2.WordViewHolder>
 
     private List<Word> words;
 
-    private WordAdapter2.OnWordClickListener onWordClickListener;
+    //click-listener
+    private OnWordClickListener onWordClickListener;
     private OnnWordLongClickListener onnWordLongClickListener;
 
-    public java.util.List<Word> getWords()
+    public List<Word> getWords()
     {
         return words;
     }
@@ -57,6 +58,7 @@ public class WordAdapter2 extends SelectableAdapter<WordAdapter2.WordViewHolder>
     {
         holder.bindData(words.get(position));
 
+        //toggle the selected overlay
         holder.selectedOverlay.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
     }
 

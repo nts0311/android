@@ -14,7 +14,7 @@ import com.android.vocab_note.R;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple {@link Fragment} subclass. It contains a RecycleView
  */
 public class SimpleRecycleViewFragment extends Fragment
 {
@@ -35,11 +35,6 @@ public class SimpleRecycleViewFragment extends Fragment
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager)
     {
         this.layoutManager = layoutManager;
-    }
-
-    public void setRecyclerView(RecyclerView recyclerView)
-    {
-        this.recyclerView = recyclerView;
     }
 
     public RecyclerView.Adapter<? extends RecyclerView.ViewHolder> getAdapter()

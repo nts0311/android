@@ -40,10 +40,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         repo = ((MyApplication) getApplication()).getRepository();
 
-        generateData();
-
+        //set up the add word button
         FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(view ->
@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity
 
         setUpViewPagerAndTabLayout();
 
+        //TODO change LiveData to SingleLiveEvent
+        //set the current category to the first category
         LiveData<List<Category>> categoryList = repo.getCategoryList();
         categoryList.observe(this, new Observer<List<Category>>()
         {
@@ -68,14 +70,19 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Set up the main View Pager with the Tab layout of this activity
+     */
     private void setUpViewPagerAndTabLayout()
     {
         mainVP = findViewById(R.id.main_viewpager);
         categoryTabs = findViewById(R.id.tab_viewpager);
 
         wordStatePagerAdapter = new WordStatePagerAdapter(getSupportFragmentManager());
+
         repo.getCategoryList().observe(this, categories ->
                 wordStatePagerAdapter.setCategories(categories));
+
         mainVP.setAdapter(wordStatePagerAdapter);
         mainVP.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
         {
@@ -88,6 +95,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPageSelected(int position)
             {
+                //set the currentCategoryId to match the one on the View Pager
                 currentCategoryId = wordStatePagerAdapter.getCategories().get(position).getId();
             }
 
@@ -100,28 +108,6 @@ public class MainActivity extends AppCompatActivity
 
         categoryTabs.setupWithViewPager(mainVP);
         categoryTabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-    }
-
-    private void generateData()
-    {
-        /*String cate = "Finance";
-
-        repo.insertCategory(new Category(cate));
-        repo.insertWordItem(new Word(cate, "debt", "borrow someone money"));
-
-        cate = "Finance1";
-
-        repo.insertCategory(new Category(cate));
-        repo.insertWordItem(new Word(cate, "debt1", "borrow someone money1"));*/
-
-        /*Category common=new Category("Common");
-        repo.insertCategory(common);
-        repo.insertWordItem(new Word(common.getId(), "fine", "good"));
-
-        Category finance=new Category("Finance");
-        repo.insertCategory(finance);
-        repo.insertWordItem(new Word(finance.getId(), "debt", "borrow someone money"));*/
-
     }
 
     @Override

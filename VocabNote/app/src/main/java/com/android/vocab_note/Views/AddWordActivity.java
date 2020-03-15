@@ -31,13 +31,12 @@ public class AddWordActivity extends AppCompatActivity
     private EditText etWord;
     private EditText etMeaning;
 
+    //current category we are in when start this activity
     private int categoryId;
 
     private int extraWordId = DEFAULT_WORD_ID;
 
     private AddWordViewModel viewModel;
-
-    private DataRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,11 +46,10 @@ public class AddWordActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        repository = ((MyApplication) getApplication()).getRepository();
-
         etWord = findViewById(R.id.et_word);
         etMeaning = findViewById(R.id.et_meaning);
 
+        //restore the extra word's id
         if (savedInstanceState != null)
         {
             if (savedInstanceState.containsKey(INSTANCE_WORD_ID))
@@ -61,36 +59,40 @@ public class AddWordActivity extends AppCompatActivity
                 categoryId = savedInstanceState.getInt(INSTANCE_CATEGORY_ID);
         }
 
+        viewModel = new ViewModelProvider(
+                this, new AddWordViewModelFactory(((MyApplication) getApplication()).getRepository()
+                , extraWordId))
+                .get(AddWordViewModel.class);
+
+
+        //get the current category's id
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(EXTRA_CATEGORY_ID))
             categoryId = intent.getIntExtra(EXTRA_CATEGORY_ID, 1);
 
         getExtraWord();
-
-
     }
 
+
+    /**
+     * get the extra word if user are viewing the word
+     */
     private void getExtraWord()
     {
         Intent intent = getIntent();
-
-        if (extraWordId != DEFAULT_WORD_ID)
+        if (intent == null)
             return;
 
-        if (intent == null)
+        //if previously restore the word's id and UI, then return
+        if (extraWordId != DEFAULT_WORD_ID)
             return;
 
         if (intent.hasExtra(EXTRA_WORD_ID))
         {
             extraWordId = intent.getIntExtra(EXTRA_WORD_ID, DEFAULT_WORD_ID);
+            final LiveData<Word> extraWord = viewModel.getExtraWord(extraWordId);
 
-            viewModel = new ViewModelProvider(
-                    this, new AddWordViewModelFactory(repository, extraWordId))
-                    .get(AddWordViewModel.class);
-
-            final LiveData<Word> extraWord = viewModel.getExtraWord();
-
-            extraWord.observe(this, word -> populateUI(word));
+            extraWord.observe(this, this::populateUI);
         }
     }
 
@@ -103,24 +105,30 @@ public class AddWordActivity extends AppCompatActivity
         outState.putInt(INSTANCE_CATEGORY_ID, categoryId);
     }
 
+    /** populate the UI with the given word
+     * @param word the word
+     */
     public void populateUI(Word word)
     {
         etWord.setText(word.getWord());
         etMeaning.setText(word.getMeaning());
     }
 
+    /**
+     * Add a word or save modified word to the database
+     */
     private void saveWord()
     {
         Word word = new Word(categoryId, etWord.getText().toString(), etMeaning.getText().toString());
 
         if (extraWordId == DEFAULT_WORD_ID)
         {
-            repository.insertWordItem(word);
+            viewModel.addWord(word);
         }
         else
         {
             word.setId(extraWordId);
-            repository.updateWordItem(word);
+            viewModel.updateWord(word);
         }
 
         finish();

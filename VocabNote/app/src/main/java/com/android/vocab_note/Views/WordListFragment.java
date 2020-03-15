@@ -39,20 +39,21 @@ public class WordListFragment extends SimpleRecycleViewFragment
     private ActionMode actionMode;
     private WordLongClickActionMode wordLongClickActionMode = new WordLongClickActionMode();
     private boolean isInActionMode = false;
+    private WordAdapter2 wordAdapter = new WordAdapter2();
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param category Parameter 1.
+     * @param categoryId The category of the list of words that this fragment display
      * @return A new instance of fragment TodoListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static WordListFragment newInstance(int category)
+    public static WordListFragment newInstance(int categoryId)
     {
         WordListFragment fragment = new WordListFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_CATEGORY, category);
+        args.putInt(ARG_CATEGORY, categoryId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,13 +81,13 @@ public class WordListFragment extends SimpleRecycleViewFragment
     {
         View rootlayout = super.onCreateView(inflater, container, savedInstanceState);
 
-        setAdapter(new WordAdapter2());
-        WordAdapter2 wordAdapter = (WordAdapter2) getAdapter();
+        setAdapter(wordAdapter);
 
         wordAdapter.setOnWordClickListener((word, position) ->
         {
             if (!isInActionMode)
             {
+                //show detail of a word
                 Intent viewWordIntent = new Intent(requireActivity(), AddWordActivity.class);
                 viewWordIntent.putExtra(AddWordActivity.EXTRA_CATEGORY_ID, categoryId);
                 viewWordIntent.putExtra(AddWordActivity.EXTRA_WORD_ID, word.getId());
@@ -101,6 +102,8 @@ public class WordListFragment extends SimpleRecycleViewFragment
 
         wordAdapter.setOnnWordLongClickListener((word, position) ->
         {
+            //delete this == undefined action of the app. This may be null when first set
+            //but better not touch it
             if (actionMode == null)
             {
                 actionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(wordLongClickActionMode);
@@ -114,22 +117,15 @@ public class WordListFragment extends SimpleRecycleViewFragment
                 new RepositoryViewModelFactory(requireActivity().getApplication()))
                 .get(WordListFragmentViewModel.class);
         viewModel.setCategory(categoryId);
-        viewModel.getWordList().observe(getViewLifecycleOwner(), words ->
-        {
-            wordAdapter.setWords(words);
-        });
+
+        viewModel.getWordList().observe(getViewLifecycleOwner(), words -> wordAdapter.setWords(words));
+
 
         DividerItemDecoration decoration = new DividerItemDecoration(
                 requireActivity().getApplicationContext(), VERTICAL);
         getRecyclerView().addItemDecoration(decoration);
 
         return rootlayout;
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
     }
 
     @Override
@@ -141,8 +137,6 @@ public class WordListFragment extends SimpleRecycleViewFragment
 
     private void toggleSelection(int position)
     {
-        WordAdapter2 wordAdapter = (WordAdapter2) getAdapter();
-
         wordAdapter.toggleSelection(position);
 
         int count = wordAdapter.getSelectedItemCount();
@@ -163,6 +157,7 @@ public class WordListFragment extends SimpleRecycleViewFragment
         }
     }
 
+    //Action mode for the long-click to select multiple item of the SelectableAdapter
     private class WordLongClickActionMode implements ActionMode.Callback
     {
         @Override
@@ -184,18 +179,8 @@ public class WordListFragment extends SimpleRecycleViewFragment
             switch (item.getItemId())
             {
                 case R.id.action_delete:
-                    WordAdapter2 wordAdapter = ((WordAdapter2) getAdapter());
-
-                    List<Word> words = wordAdapter.getWords();
-                    List<Integer> selectedIndexes = wordAdapter.getSelectedItems();
-                    List<Word> wordsToDelete = new ArrayList<>();
-
-                    for (Integer index : selectedIndexes)
-                        wordsToDelete.add(words.get(index));
-                    viewModel.deleteWordList(wordsToDelete);
-
+                    viewModel.deleteWordList(wordAdapter.getSelectedItems());
                     finishActionMode();
-
                     return true;
             }
 
@@ -205,11 +190,12 @@ public class WordListFragment extends SimpleRecycleViewFragment
         @Override
         public void onDestroyActionMode(ActionMode mode)
         {
-            ((WordAdapter2) getAdapter()).clearSelection();
+            wordAdapter.clearSelection();
             isInActionMode = false;
             actionMode = null;
         }
     }
+
     private void finishActionMode()
     {
         if (actionMode != null)

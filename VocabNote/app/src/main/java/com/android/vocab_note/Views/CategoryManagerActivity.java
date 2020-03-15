@@ -82,9 +82,6 @@ public class CategoryManagerActivity extends AppCompatActivity
             }
 
             dataRepository.insertCategory(newCategory);
-
-            Toast.makeText(CategoryManagerActivity.this,
-                    "Add " + newCategory + " to categories!", Toast.LENGTH_SHORT).show();
         });
 
         builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
