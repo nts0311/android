@@ -118,7 +118,8 @@ public class WordListFragment extends SimpleRecycleViewFragment
                 .get(WordListFragmentViewModel.class);
         viewModel.setCategory(categoryId);
 
-        viewModel.getWordList().observe(getViewLifecycleOwner(), words -> wordAdapter.setWords(words));
+        viewModel.getWordList().observe(getViewLifecycleOwner(), words ->
+                wordAdapter.setWords(words));
 
 
         DividerItemDecoration decoration = new DividerItemDecoration(

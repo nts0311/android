@@ -48,8 +48,9 @@ public abstract class AppDatabase extends RoomDatabase
                                 executor.execute(() ->
                                 {
                                     AppDatabase appDatabase = AppDatabase.getInstance(appContext);
+                                    Category category=new Category(Constants.CATEGORY_COMMON);
                                     appDatabase.getCategoryDao()
-                                            .insertCategory(new Category(Constants.CATEGORY_COMMON));
+                                            .insertCategory(category);
                                 });
                             }
                         })
