@@ -36,7 +36,6 @@ public class WordStatePagerAdapter extends FragmentStatePagerAdapter
     }
 
 
-
     @NonNull
     @Override
     public Fragment getItem(int position)
@@ -56,5 +55,21 @@ public class WordStatePagerAdapter extends FragmentStatePagerAdapter
     public CharSequence getPageTitle(int position)
     {
         return categories.get(position).getCategory();
+    }
+
+    @Override
+    public int getItemPosition(@NonNull Object object)
+    {
+        WordListFragment wordListFragment = (WordListFragment) object;
+
+        int categoryId = wordListFragment.getCategoryId();
+
+        for (int i = 0; i < categories.size(); i++)
+        {
+            if (categories.get(i).getId() == categoryId)
+                return i;
+        }
+
+        return POSITION_NONE;
     }
 }

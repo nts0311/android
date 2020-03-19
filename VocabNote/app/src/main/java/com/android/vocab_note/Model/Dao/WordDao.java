@@ -32,6 +32,9 @@ public interface WordDao
     @Insert
     void insertWord(Word word);
 
+    @Insert
+    void insertWord(List<Word> wordList);
+
     @Delete
     void deleteWord(Word word);
 

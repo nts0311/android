@@ -41,6 +41,11 @@ public class WordListFragment extends SimpleRecycleViewFragment
     private boolean isInActionMode = false;
     private WordAdapter2 wordAdapter = new WordAdapter2();
 
+    public int getCategoryId()
+    {
+        return categoryId;
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.

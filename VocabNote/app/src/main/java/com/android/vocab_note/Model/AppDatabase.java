@@ -51,6 +51,9 @@ public abstract class AppDatabase extends RoomDatabase
                                     Category category=new Category(Constants.CATEGORY_COMMON);
                                     appDatabase.getCategoryDao()
                                             .insertCategory(category);
+
+                                    appDatabase.getCategoryDao().insertCategory(DataGenerator.generateCategories());
+                                    appDatabase.getWordDao().insertWord(DataGenerator.generateWords());
                                 });
                             }
                         })

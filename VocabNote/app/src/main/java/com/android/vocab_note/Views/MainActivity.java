@@ -81,7 +81,9 @@ public class MainActivity extends AppCompatActivity
         wordStatePagerAdapter = new WordStatePagerAdapter(getSupportFragmentManager());
 
         repo.getCategoryList().observe(this, categories ->
-                wordStatePagerAdapter.setCategories(categories));
+        {
+            wordStatePagerAdapter.setCategories(categories);
+        });
 
         mainVP.setAdapter(wordStatePagerAdapter);
         mainVP.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
