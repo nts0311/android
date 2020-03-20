@@ -1,6 +1,7 @@
 package com.android.vocab_note.Views;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -59,6 +60,9 @@ public class WordTestActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_test);
+        ActionBar actionBar=getSupportActionBar();
+        actionBar.setTitle("Random quiz");
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         setUpView();
 

@@ -31,6 +31,7 @@ public class CategoryManagerActivity extends AppCompatActivity
         setContentView(R.layout.activity_category_manager);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dataRepository = ((MyApplication) getApplication()).getRepository();
     }

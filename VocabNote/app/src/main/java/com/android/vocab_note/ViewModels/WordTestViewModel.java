@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.android.vocab_note.DataRepository;
-import com.android.vocab_note.Model.Entity.Category;
 import com.android.vocab_note.Model.Entity.Word;
 
 import java.util.ArrayList;

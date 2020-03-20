@@ -44,8 +44,10 @@ public class AddWordActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_word);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         toolbar.setTitle("Add a word");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         etWord = findViewById(R.id.et_word);
         etMeaning = findViewById(R.id.et_meaning);

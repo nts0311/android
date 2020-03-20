@@ -1,5 +1,6 @@
 package com.android.vocab_note.Views;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -14,14 +15,21 @@ import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -31,6 +39,8 @@ public class MainActivity extends AppCompatActivity
     private TabLayout categoryTabs;
     private ViewPager mainVP;
     private WordStatePagerAdapter wordStatePagerAdapter;
+    private SearchView searchView;
+    private SearchView.SearchAutoComplete searchAutoComplete;
 
     private int currentCategoryId;
 
@@ -126,6 +136,33 @@ public class MainActivity extends AppCompatActivity
     {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        searchView= (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchAutoComplete= searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+
+        List<String> suggestion=new ArrayList<>();
+        suggestion.add("This");
+        suggestion.add("is");
+        suggestion.add("for");
+        suggestion.add("testing");
+
+        SearchManager searchManager=(SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(),
+                R.layout.search_item, suggestion);
+        searchAutoComplete.setAdapter(adapter);
+
+        searchAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                Toast.makeText(getApplicationContext(),""+id,Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
         return true;
     }
 
