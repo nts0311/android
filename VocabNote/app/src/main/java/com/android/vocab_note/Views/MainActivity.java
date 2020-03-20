@@ -12,6 +12,7 @@ import com.android.vocab_note.Views.Adapters.WordStatePagerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LiveData;
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity
     private WordStatePagerAdapter wordStatePagerAdapter;
 
     private int currentCategoryId;
+
+    private List<Category> categories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -68,6 +71,11 @@ public class MainActivity extends AppCompatActivity
                 categoryList.removeObserver(this);
             }
         });
+
+        repo.getWordList().observe(this , words ->
+        {
+
+        });
     }
 
     /**
@@ -83,6 +91,7 @@ public class MainActivity extends AppCompatActivity
         repo.getCategoryList().observe(this, categories ->
         {
             wordStatePagerAdapter.setCategories(categories);
+            this.categories = categories;
         });
 
         mainVP.setAdapter(wordStatePagerAdapter);
@@ -137,7 +146,31 @@ public class MainActivity extends AppCompatActivity
         {
             startActivity(new Intent(this, CategoryManagerActivity.class));
         }
+        else if (id == R.id.item_go_to_category)
+        {
+            showSelectCategoryDialog();
+        }
+        else if(id==R.id.item_word_test)
+        {
+            startActivity(new Intent(this, WordTestActivity.class));
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showSelectCategoryDialog()
+    {
+        String[] cateStrArr = new String[categories.size()];
+
+        for (int i = 0; i < categories.size(); i++)
+        {
+            cateStrArr[i] = categories.get(i).getCategory();
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("Go to category")
+                .setItems(cateStrArr, (dialog, which) -> mainVP.setCurrentItem(which));
+
+        builder.create().show();
     }
 }

@@ -1,5 +1,6 @@
 package com.android.vocab_note.Model.Entity;
 
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -68,5 +69,14 @@ public class Word
     public void setWord(String word)
     {
         this.word = word;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj)
+    {
+        if (!(obj instanceof Word))
+            return false;
+
+        return (getId() == ((Word) obj).getId());
     }
 }

@@ -45,6 +45,7 @@ public class AddWordActivity extends AppCompatActivity
         setContentView(R.layout.activity_add_word);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("Add a word");
 
         etWord = findViewById(R.id.et_word);
         etMeaning = findViewById(R.id.et_meaning);
@@ -93,6 +94,8 @@ public class AddWordActivity extends AppCompatActivity
             final LiveData<Word> extraWord = viewModel.getExtraWord(extraWordId);
 
             extraWord.observe(this, this::populateUI);
+
+            getSupportActionBar().setTitle("Edit word");
         }
     }
 

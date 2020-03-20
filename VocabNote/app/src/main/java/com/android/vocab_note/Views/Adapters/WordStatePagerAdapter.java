@@ -70,6 +70,8 @@ public class WordStatePagerAdapter extends FragmentStatePagerAdapter
                 return i;
         }
 
+        //if the category has been deleted from the list, return position_none
+        // so the ViewPager call destroyItem and remove the Fragment
         return POSITION_NONE;
     }
 }

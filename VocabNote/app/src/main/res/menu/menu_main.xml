@@ -8,6 +8,12 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
+        android:id="@+id/item_word_test"
+        android:title="Test your memory" />
+    <item
         android:id="@+id/item_category_manager"
         android:title="Category Manager" />
+    <item
+        android:id="@+id/item_go_to_category"
+        android:title="Go to category" />
 </menu>

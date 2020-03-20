@@ -65,4 +65,6 @@ public class SimpleRecycleViewFragment extends Fragment
 
         return rootLayout;
     }
+
+
 }
