@@ -15,7 +15,10 @@ import java.util.List;
 public interface WordDao
 {
     @Query("SELECT * FROM words")
-    LiveData<List<Word>> getWordList();
+    LiveData<List<Word>> getWordListLD();
+
+    @Query("SELECT * FROM words")
+    List<Word> getWordList();
 
     @Query("SELECT * FROM words WHERE categoryId=:categoryId")
     LiveData<List<Word>> getWordListByCategory(int categoryId);

@@ -4,11 +4,14 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.android.vocab_note.FilterableAdapter;
 import com.android.vocab_note.DataRepository;
 import com.android.vocab_note.Model.Entity.Category;
 import com.android.vocab_note.Model.Entity.Word;
 import com.android.vocab_note.MyApplication;
 import com.android.vocab_note.R;
+import com.android.vocab_note.ViewModels.MainViewModel;
+import com.android.vocab_note.ViewModels.RepositoryViewModelFactory;
 import com.android.vocab_note.Views.Adapters.WordStatePagerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -17,9 +20,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuItemCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.Menu;
@@ -34,13 +37,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
-
-    private DataRepository repo;
     private TabLayout categoryTabs;
     private ViewPager mainVP;
     private WordStatePagerAdapter wordStatePagerAdapter;
     private SearchView searchView;
     private SearchView.SearchAutoComplete searchAutoComplete;
+    private MainViewModel viewModel;
+    private FilterableAdapter<Word> searchAutoCompleteAdapter;
 
     private int currentCategoryId;
 
@@ -54,7 +57,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        repo = ((MyApplication) getApplication()).getRepository();
+        viewModel = new ViewModelProvider(this, new RepositoryViewModelFactory(getApplication()))
+                .get(MainViewModel.class);
 
         //set up the add word button
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -70,7 +74,7 @@ public class MainActivity extends AppCompatActivity
 
         //TODO change LiveData to SingleLiveEvent
         //set the current category to the first category
-        LiveData<List<Category>> categoryList = repo.getCategoryList();
+        LiveData<List<Category>> categoryList = viewModel.getCategoryList();
         categoryList.observe(this, new Observer<List<Category>>()
         {
             @Override
@@ -82,9 +86,11 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        repo.getWordList().observe(this , words ->
-        {
+        searchAutoCompleteAdapter = new FilterableAdapter<>(this, new ArrayList<>());
 
+        viewModel.getWordList().observe(this, words ->
+        {
+            searchAutoCompleteAdapter.resetData(words);
         });
     }
 
@@ -98,7 +104,7 @@ public class MainActivity extends AppCompatActivity
 
         wordStatePagerAdapter = new WordStatePagerAdapter(getSupportFragmentManager());
 
-        repo.getCategoryList().observe(this, categories ->
+        viewModel.getCategoryList().observe(this, categories ->
         {
             wordStatePagerAdapter.setCategories(categories);
             this.categories = categories;
@@ -137,34 +143,28 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        searchView= (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchAutoComplete= searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchView = (SearchView) searchItem.getActionView();
+        searchAutoComplete = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
 
-        List<String> suggestion=new ArrayList<>();
-        suggestion.add("This");
-        suggestion.add("is");
-        suggestion.add("for");
-        suggestion.add("testing");
-
-        SearchManager searchManager=(SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(),
-                R.layout.search_item, suggestion);
-        searchAutoComplete.setAdapter(adapter);
-
-        searchAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        searchAutoComplete.setAdapter(searchAutoCompleteAdapter);
+        searchAutoComplete.setOnItemClickListener((parent, view, position, id) ->
         {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                Toast.makeText(getApplicationContext(),""+id,Toast.LENGTH_SHORT).show();
+            searchItem.collapseActionView();
 
-            }
+            Word word = searchAutoCompleteAdapter.getItem(position);
+            Intent viewWordIntent = new Intent(MainActivity.this, AddWordActivity.class);
+            viewWordIntent.putExtra(AddWordActivity.EXTRA_CATEGORY_ID, word.getCategoryId());
+            viewWordIntent.putExtra(AddWordActivity.EXTRA_WORD_ID, word.getId());
+            startActivity(viewWordIntent);
         });
 
 
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity
         {
             showSelectCategoryDialog();
         }
-        else if(id==R.id.item_word_test)
+        else if (id == R.id.item_word_test)
         {
             startActivity(new Intent(this, WordTestActivity.class));
         }

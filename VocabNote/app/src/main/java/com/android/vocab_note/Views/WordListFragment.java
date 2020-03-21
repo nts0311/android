@@ -141,6 +141,14 @@ public class WordListFragment extends SimpleRecycleViewFragment
         outState.putInt(INSTANCE_CATEGORY, categoryId);
     }
 
+    @Override
+    public void onDestroyView()
+    {
+        super.onDestroyView();
+        actionMode = null;
+        wordLongClickActionMode = null;
+    }
+
     private void toggleSelection(int position)
     {
         wordAdapter.toggleSelection(position);

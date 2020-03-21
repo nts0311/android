@@ -9,6 +9,7 @@ import com.android.vocab_note.Model.AppDatabase;
 import com.android.vocab_note.Model.Entity.Category;
 import com.android.vocab_note.Model.Entity.Word;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataRepository
@@ -27,7 +28,7 @@ public class DataRepository
         appExecutors = AppExecutors.getInstance();
 
         categoryList = appDatabase.getCategoryDao().getCategoryList();
-        wordList = appDatabase.getWordDao().getWordList();
+        wordList = appDatabase.getWordDao().getWordListLD();
     }
 
     public static DataRepository getInstance(Context appContext)
@@ -71,10 +72,18 @@ public class DataRepository
                 appDatabase.getCategoryDao().deleteCategory(category));
     }
 
-    public LiveData<List<Word>> getWordList()
+    public LiveData<List<Word>> getWordListLD()
     {
         return wordList;
     }
+
+    /*public List<Word> getWordList()
+    {
+        final List<Word> result=new ArrayList<>();
+        appExecutors.getDiskIO().execute(()-> result.addAll(appDatabase.getWordDao().getWordList()));
+
+        return result;
+    }*/
 
     public LiveData<List<Word>> getWordListByCategory(int categoryId)
     {

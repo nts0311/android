@@ -14,7 +14,6 @@ import java.util.Random;
 public class WordTestViewModel extends ViewModel
 {
     private DataRepository repository;
-    private LiveData<List<Word>> wordListLiveData;
     private MutableLiveData<Boolean> isCorrect;
     private MutableLiveData<Word> wordToAsk;
     private MutableLiveData<List<Word>> otherWords;
@@ -24,7 +23,6 @@ public class WordTestViewModel extends ViewModel
     public WordTestViewModel(DataRepository repository)
     {
         this.repository = repository;
-        wordListLiveData = repository.getWordList();
         random = new Random();
         isCorrect = new MutableLiveData<>(false);
         wordToAsk = new MutableLiveData<>();
@@ -49,7 +47,7 @@ public class WordTestViewModel extends ViewModel
 
     public void createQuestion()
     {
-        List<Word> wordList = repository.getWordList().getValue();
+        List<Word> wordList = repository.getWordListLD().getValue();
 
         int wordToAskIndex = random.nextInt(wordList.size());
 

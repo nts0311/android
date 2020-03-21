@@ -60,7 +60,7 @@ public class WordTestActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_test);
-        ActionBar actionBar=getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Random quiz");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -151,13 +151,18 @@ public class WordTestActivity extends AppCompatActivity
 
     private void nextQuestion()
     {
-        selectedAnswer.setBackground(defaultBackground);
+        if (selectedAnswer != null)
+        {
+            selectedAnswer.setBackground(defaultBackground);
+        }
+
         if (changedCorrectAnswerBackground)
             tvAnswerList.get(CORRECT_ANSWER_INDEX).setBackground(defaultBackground);
 
         viewModel.createQuestion();
         numOfQuiz++;
         canChooseAnswer = true;
+        changedCorrectAnswerBackground = false;
     }
 
     @Override

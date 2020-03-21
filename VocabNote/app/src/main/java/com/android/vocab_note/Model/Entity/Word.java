@@ -1,5 +1,6 @@
 package com.android.vocab_note.Model.Entity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -78,5 +79,12 @@ public class Word
             return false;
 
         return (getId() == ((Word) obj).getId());
+    }
+
+    @NonNull
+    @Override
+    public String toString()
+    {
+        return word + " - " + meaning;
     }
 }
