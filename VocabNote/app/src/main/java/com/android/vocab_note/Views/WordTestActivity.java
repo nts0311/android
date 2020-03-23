@@ -105,7 +105,7 @@ public class WordTestActivity extends AppCompatActivity
             String question = "What is the meaning of \n" + wordToAsk.getWord() + " ?";
             tvQuestion.setText(question);
 
-            tvAnswerList.get(3).setText(wordToAsk.getMeaning());
+            tvAnswerList.get(CORRECT_ANSWER_INDEX).setText(wordToAsk.getMeaning());
         });
     }
 

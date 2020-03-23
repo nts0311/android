@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.android.vocab_note"
         minSdkVersion 23
-        targetSdkVersion 29
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
 
@@ -57,4 +57,10 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
+
+    def preference_version = "1.1.0"
+    implementation "androidx.preference:preference:$preference_version"
+
+    def work_version = "2.3.4"
+    implementation "androidx.work:work-runtime:$work_version"
 }

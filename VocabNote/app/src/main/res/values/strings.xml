@@ -17,4 +17,15 @@
 
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+
+    <string name="noti_title">Do you have any vocabs today?</string>
+    <string name="noti_content">Add vocabs and take quiz to help you memorize it!</string>
+    <string name="noti_channel_name">Primary</string>
+
+    <string name="pref_enable_noti_key" translatable="false">enable_notification_pref_key</string>
+    <string name="pref_enable_noti_title">Enable reminder notification</string>
+    <string name="pref_enable_noti_summary">Show a reminder notification of a random word.</string>
+
+    <string name="noti_worker_id" translatable="false">notification_worker_key</string>
+
 </resources>

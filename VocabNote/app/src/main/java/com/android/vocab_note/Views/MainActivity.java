@@ -2,13 +2,14 @@ package com.android.vocab_note.Views;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.android.vocab_note.FilterableAdapter;
-import com.android.vocab_note.DataRepository;
+import com.android.vocab_note.NotificationWorker;
+import com.android.vocab_note.Utilities.NotificationUtil;
+import com.android.vocab_note.Views.Adapters.FilterableAdapter;
 import com.android.vocab_note.Model.Entity.Category;
 import com.android.vocab_note.Model.Entity.Word;
-import com.android.vocab_note.MyApplication;
 import com.android.vocab_note.R;
 import com.android.vocab_note.ViewModels.MainViewModel;
 import com.android.vocab_note.ViewModels.RepositoryViewModelFactory;
@@ -23,17 +24,19 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
+import androidx.work.Constraints;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -92,11 +95,14 @@ public class MainActivity extends AppCompatActivity
         {
             searchAutoCompleteAdapter.resetData(words);
         });
+
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
 
-    /**
-     * Set up the main View Pager with the Tab layout of this activity
-     */
+
+//Set up the main View Pager with the Tab layout of this activity
+
     private void setUpViewPagerAndTabLayout()
     {
         mainVP = findViewById(R.id.main_viewpager);
@@ -177,7 +183,7 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings)
         {
-            return true;
+            startActivity(new Intent(this, SettingsActivity.class));
         }
         else if (id == R.id.item_category_manager)
         {
@@ -195,6 +201,14 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(preferenceChangeListener);
+    }
+
     private void showSelectCategoryDialog()
     {
         String[] cateStrArr = new String[categories.size()];
@@ -210,4 +224,46 @@ public class MainActivity extends AppCompatActivity
 
         builder.create().show();
     }
+
+
+    private UUID scheduleReminderNotification()
+    {
+        PeriodicWorkRequest reminderWorkRequest = new PeriodicWorkRequest.Builder(NotificationWorker.class,
+                20, TimeUnit.MINUTES)
+                .build();
+
+        WorkManager.getInstance(this).enqueue(reminderWorkRequest);
+
+        return reminderWorkRequest.getId();
+    }
+
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener =
+            (sharedPreferences, key) ->
+            {
+                String enableNotiKey = getString(R.string.pref_enable_noti_key);
+                String wordIdKey = getString(R.string.noti_worker_id);
+
+                if (key.equals(enableNotiKey))
+                {
+                    boolean isReminderEnable = sharedPreferences.getBoolean(key, true);
+
+                    if (isReminderEnable)
+                    {
+                        UUID reminderWorkId = scheduleReminderNotification();
+
+                        //save work id for latter use
+                        sharedPreferences.edit()
+                                .putString(wordIdKey, reminderWorkId.toString())
+                                .apply();
+                    }
+                    else
+                    {
+                        UUID reminderWorkId = UUID.fromString(sharedPreferences.getString(wordIdKey, ""));
+                        WorkManager.getInstance(MainActivity.this).cancelWorkById(reminderWorkId);
+                    }
+                }
+
+            };
 }
+
+

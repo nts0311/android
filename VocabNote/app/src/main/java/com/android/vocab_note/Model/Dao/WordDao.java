@@ -26,6 +26,9 @@ public interface WordDao
     @Query("SELECT * FROM words WHERE id=:id")
     LiveData<Word> getWordById(int id);
 
+    @Query("SELECT * FROM words ORDER BY RANDOM() LIMIT 1")
+    Word getRandomWord();
+
     @Query("UPDATE words SET categoryId=:newCategoryId WHERE categoryId=:oldCategoryId")
     void updateWordsCategory(int oldCategoryId, int newCategoryId);
 

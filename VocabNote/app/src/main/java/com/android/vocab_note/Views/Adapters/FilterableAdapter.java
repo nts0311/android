@@ -1,4 +1,4 @@
-package com.android.vocab_note;
+package com.android.vocab_note.Views.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.vocab_note.Model.Entity.Word;
+import com.android.vocab_note.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;

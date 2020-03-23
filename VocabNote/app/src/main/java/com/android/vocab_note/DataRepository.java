@@ -77,13 +77,11 @@ public class DataRepository
         return wordList;
     }
 
-    /*public List<Word> getWordList()
+    //DONT USE ON MAIN THREAD
+    public Word getRandomWord()
     {
-        final List<Word> result=new ArrayList<>();
-        appExecutors.getDiskIO().execute(()-> result.addAll(appDatabase.getWordDao().getWordList()));
-
-        return result;
-    }*/
+        return appDatabase.getWordDao().getRandomWord();
+    }
 
     public LiveData<List<Word>> getWordListByCategory(int categoryId)
     {

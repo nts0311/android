@@ -1,6 +1,5 @@
 package com.android.vocab_note.ViewModels;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -47,6 +46,7 @@ public class WordTestViewModel extends ViewModel
 
     public void createQuestion()
     {
+        //safe to call getValue because we observed it in MainActivity
         List<Word> wordList = repository.getWordListLD().getValue();
 
         int wordToAskIndex = random.nextInt(wordList.size());
