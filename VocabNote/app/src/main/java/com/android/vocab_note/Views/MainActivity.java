@@ -89,19 +89,22 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        //setup search auto-complete adapter with the list of all words
         searchAutoCompleteAdapter = new FilterableAdapter<>(this, new ArrayList<>());
-
         viewModel.getWordList().observe(this, words ->
-        {
-            searchAutoCompleteAdapter.resetData(words);
-        });
+                searchAutoCompleteAdapter.resetData(words));
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
 
+    @Override
+    protected void onPostResume()
+    {
+        super.onPostResume();
+    }
 
-//Set up the main View Pager with the Tab layout of this activity
+    //Set up the main View Pager with the Tab layout of this activity
 
     private void setUpViewPagerAndTabLayout()
     {
@@ -149,17 +152,20 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
+        //setup the SearchView
         MenuItem searchItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) searchItem.getActionView();
         searchAutoComplete = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
 
+        //auto-complete as search recommendation
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchAutoComplete.setAdapter(searchAutoCompleteAdapter);
         searchAutoComplete.setOnItemClickListener((parent, view, position, id) ->
         {
             searchItem.collapseActionView();
 
+            //show detail of a Word when user click an item on the auto-complete
             Word word = searchAutoCompleteAdapter.getItem(position);
             Intent viewWordIntent = new Intent(MainActivity.this, AddWordActivity.class);
             viewWordIntent.putExtra(AddWordActivity.EXTRA_CATEGORY_ID, word.getCategoryId());
@@ -229,7 +235,7 @@ public class MainActivity extends AppCompatActivity
     private UUID scheduleReminderNotification()
     {
         PeriodicWorkRequest reminderWorkRequest = new PeriodicWorkRequest.Builder(NotificationWorker.class,
-                20, TimeUnit.MINUTES)
+                1, TimeUnit.DAYS)
                 .build();
 
         WorkManager.getInstance(this).enqueue(reminderWorkRequest);
@@ -249,6 +255,7 @@ public class MainActivity extends AppCompatActivity
 
                     if (isReminderEnable)
                     {
+                        //enable notification
                         UUID reminderWorkId = scheduleReminderNotification();
 
                         //save work id for latter use
@@ -258,6 +265,7 @@ public class MainActivity extends AppCompatActivity
                     }
                     else
                     {
+                        //cancel the notifications
                         UUID reminderWorkId = UUID.fromString(sharedPreferences.getString(wordIdKey, ""));
                         WorkManager.getInstance(MainActivity.this).cancelWorkById(reminderWorkId);
                     }

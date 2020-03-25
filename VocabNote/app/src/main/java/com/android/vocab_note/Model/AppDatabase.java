@@ -34,7 +34,7 @@ public abstract class AppDatabase extends RoomDatabase
             synchronized (AppDatabase.class)
             {
                 Log.d(LOG_TAG, "Building db...");
-                instance = Room.inMemoryDatabaseBuilder(appContext, AppDatabase.class)
+                instance = Room.databaseBuilder(appContext, AppDatabase.class, DB_NAME)
                         .addCallback(new Callback()
                         {
                             @Override
@@ -48,12 +48,12 @@ public abstract class AppDatabase extends RoomDatabase
                                 executor.execute(() ->
                                 {
                                     AppDatabase appDatabase = AppDatabase.getInstance(appContext);
-                                    Category category=new Category(Constants.CATEGORY_COMMON);
+                                    Category category = new Category(Constants.CATEGORY_COMMON);
                                     appDatabase.getCategoryDao()
                                             .insertCategory(category);
 
-                                    appDatabase.getCategoryDao().insertCategory(DataGenerator.generateCategories());
-                                    appDatabase.getWordDao().insertWord(DataGenerator.generateWords());
+                                    /*appDatabase.getCategoryDao().insertCategory(DataGenerator.generateCategories());
+                                    appDatabase.getWordDao().insertWord(DataGenerator.generateWords());*/
                                 });
                             }
                         })

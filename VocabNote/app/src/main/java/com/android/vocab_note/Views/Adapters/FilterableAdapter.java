@@ -160,7 +160,7 @@ public class FilterableAdapter<T> extends ArrayAdapter<T>
                 return filterResults;
 
 
-            String filterString = constraint.toString();
+            String filterString = constraint.toString().toLowerCase();
             List<T> result = new ArrayList<>();
 
             if (filterString.length() > 0)

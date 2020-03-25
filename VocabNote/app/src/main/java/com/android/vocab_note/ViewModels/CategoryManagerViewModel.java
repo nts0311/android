@@ -32,7 +32,9 @@ public class CategoryManagerViewModel extends ViewModel
     }
 
 
-    /** Remove a category, change all the words's category int it to Common
+    /**
+     * Remove a category, change all the words's category int it to Common
+     *
      * @param position the position of the category to remove
      */
     public void removeCategory(int position)
@@ -40,7 +42,7 @@ public class CategoryManagerViewModel extends ViewModel
         Category removedCategory = getCategory(position);
 
         //Cannot remove the default category
-        if(removedCategory.getCategory().equals(Constants.CATEGORY_COMMON))
+        if (removedCategory.getCategory().equals(Constants.CATEGORY_COMMON))
             return;
 
         repository.deleteCategory(removedCategory);
@@ -50,13 +52,19 @@ public class CategoryManagerViewModel extends ViewModel
     }
 
 
-    /** Rename a category
-     * @param oldCategory the old category
+    /**
+     * Rename a category
+     *
+     * @param oldCategory    the old category
      * @param newCategoryStr the new category
      */
     public void renameCategory(Category oldCategory, String newCategoryStr)
     {
         Category newCategory = new Category(oldCategory.getId(), newCategoryStr);
+
+        if (!categoryList.getValue().contains(oldCategory))
+            return;
+
         repository.updateWordCategory(newCategory);
     }
 }

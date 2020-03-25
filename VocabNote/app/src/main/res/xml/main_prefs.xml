@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="@string/pref_enable_noti_key"
         android:summary="@string/pref_enable_noti_summary"
-        android:title="@string/pref_enable_noti_title" />
+        android:title="@string/pref_enable_noti_title"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>

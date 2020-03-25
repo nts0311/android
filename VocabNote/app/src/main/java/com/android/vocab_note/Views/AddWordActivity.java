@@ -20,6 +20,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import java.io.IOError;
+import java.io.IOException;
+
 public class AddWordActivity extends AppCompatActivity
 {
     public static final String EXTRA_WORD_ID = "extra_word_id";
@@ -41,6 +44,7 @@ public class AddWordActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_word);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -71,11 +75,12 @@ public class AddWordActivity extends AppCompatActivity
         //get the current category's id
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(EXTRA_CATEGORY_ID))
-            categoryId = intent.getIntExtra(EXTRA_CATEGORY_ID, 1);
+            categoryId = intent.getIntExtra(EXTRA_CATEGORY_ID, 0);
 
         getExtraWord();
-    }
 
+
+    }
 
     /**
      * get the extra word if user are viewing the word
@@ -110,11 +115,16 @@ public class AddWordActivity extends AppCompatActivity
         outState.putInt(INSTANCE_CATEGORY_ID, categoryId);
     }
 
-    /** populate the UI with the given word
+    /**
+     * populate the UI with the given word
+     *
      * @param word the word
      */
     public void populateUI(Word word)
     {
+        if (word == null)
+            return;
+
         etWord.setText(word.getWord());
         etMeaning.setText(word.getMeaning());
     }

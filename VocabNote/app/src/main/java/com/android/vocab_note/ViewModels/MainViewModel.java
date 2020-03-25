@@ -35,4 +35,9 @@ public class MainViewModel extends ViewModel
     {
         return categoryList;
     }
+
+    public Word getRandomWord()
+    {
+        return repository.getRandomWord();
+    }
 }
