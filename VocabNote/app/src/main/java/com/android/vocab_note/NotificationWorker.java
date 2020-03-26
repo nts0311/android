@@ -26,7 +26,11 @@ public class NotificationWorker extends Worker
     public Result doWork()
     {
         Word randomWord = repository.getRandomWord();
-        NotificationUtil.showReminderNotification(getApplicationContext(), randomWord);
+
+        if (randomWord != null)
+        {
+            NotificationUtil.showReminderNotification(getApplicationContext(), randomWord);
+        }
 
         return Result.success();
     }

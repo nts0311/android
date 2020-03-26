@@ -49,6 +49,9 @@ public class WordTestViewModel extends ViewModel
         //safe to call getValue because we observed it in MainActivity
         List<Word> wordList = repository.getWordListLD().getValue();
 
+        if (wordList.size() < 4)
+            return;
+
         int wordToAskIndex = random.nextInt(wordList.size());
 
         List<Word> randomWords = new ArrayList<>();
